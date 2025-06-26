@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %} Fitness Goals {% endblock %}
+    
+{% block content %}
+
+    <form action = "{{url_for('register.step2')}}", method = "POST">
+        <input type = "number" name = "daily_calories" placeholder = "Daily Calorie Goal">
+        <input type = "number" name = "daily_carbohydrates" placeholder = "Daily Carbohydrate Goal (g)">
+        <input type = "number" name = "daily_fat" placeholder = "Daily Fats Goal (g)">
+        <input type = "number" name = "daily_fiber" placeholder = "Daily Fiber Goal (g)">
+        <input type = "number" name = "daily_protein" placeholder = "Daily Protein Goal (g)">
+        <input type = "submit" value = "Next">
+    </form>
+
+{% endblock %}

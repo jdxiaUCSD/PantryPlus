@@ -3,13 +3,6 @@
 {% block title %} Login Page {% endblock %}
     
 {% block content %}
-
-    <form action = "{{url_for('login')}}", method = "POST">
-        <input type = "text" name = "Username" placeholder = "Username">
-        <input type = "text" name = "Password" placeholder = "Password">
-        <input type = "submit" value = "Login">
-    </form>
-
     {% with messages = get_flashed_messages()%}
         {% if messages %}
             <ul>
@@ -19,4 +12,12 @@
             </ul>
         {% endif %}
     {% endwith %}
+
+    <form action = "{{url_for('auth.login')}}", method = "POST">
+        <input type = "text" name = "Username" placeholder = "Username">
+        <input type = "text" name = "Password" placeholder = "Password">
+        <input type = "submit" value = "Login">
+    </form>
+
+    <a href = "{{url_for('register.register')}}"> Register </a>
 {% endblock %}

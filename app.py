@@ -1,31 +1,39 @@
-from flask import Flask, url_for, render_template, session, request, flash, redirect
+from flask import Flask, session, request
+from flask_login import LoginManager, UserMixin
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_bcrypt import Bcrypt
 
-app = Flask(__name__, template_folder = 'templates', static_folder= 'static', static_url_path= '/')
-app.secret_key = 'Some Key'
+db = SQLAlchemy()
+login_manager = LoginManager()
+migrate = Migrate()
+bcrypt = Bcrypt()
 
-@app.route('/')
-def index():
-    return render_template('login.html')
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    if user_id == 'Jayden':
+        return User('Jayden')
+    return None
 
-@app.route('/login', methods = ['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form.get('Username')
-        password = request.form.get('Password')
-        if (username == 'Jayden' and password == 'Xia'):
-            flash('Login Successful!')
-            return render_template('dashboard.html', username = username)
-        else: flash('Login Failed')
-    return render_template('login.html')
+def create_app():
+    app = Flask(__name__, template_folder = 'templates', static_folder= 'static', static_url_path= '/')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./blueprints.db'
+    app.secret_key = 'Some Key'
+    
+    
+    db.init_app(app)
+    login_manager.init_app(app)
+    # login_manager_view = "auth.login"
+    migrate.init_app(app, db)
 
-@app.route('/log_out')
-def log_out():
-    session.pop('_flashes', None)
-    flash('Logout Successful')
-    return redirect(url_for('login'))
+    from blueprints.auth import auth_bp
+    from blueprints.main import main_bp
+    from blueprints.register import register_bp
 
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(main_bp)
+    app.register_blueprint(register_bp)
 
-if __name__ == '__main__':
-    #Host, port, debug mode
-    #Debug allow the app deployment to update automatically
-    app.run(host='0.0.0.0', port=5006, debug=True)
+    return app
+
