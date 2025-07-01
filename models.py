@@ -49,6 +49,7 @@ class Recipes(db.Model):
     cooking_time = db.Column(db.Integer)
     prep_time = db.Column(db.Integer)
     servings = db.Column(db.Integer)
+    difficulty = db.Column(db.Text)
 
     protein_amount = db.Column(db.Integer)
     carb_amount = db.Column(db.Integer)

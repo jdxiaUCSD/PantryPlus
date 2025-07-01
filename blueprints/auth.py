@@ -17,7 +17,7 @@ def login():
             user = User.query.filter(User.username == username).first()
             if user and bcrypt.check_password_hash(user.password, password):
                 login_user(user)
-                return render_template('/main/dashboard.html', username = username)
+                return redirect(url_for("main.dashboard"))
             else:
                 flash('Incorrect Login credentials')
         except Exception as e:

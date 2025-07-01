@@ -2,237 +2,183 @@
 <html>
 <head>
     <title>My Recipes</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/recipes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/sidebar.css') }}">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .recipes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            padding: 20px 0;
-        }
-
-        .recipe-card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .recipe-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-        }
-
-        .recipe-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-            border-radius: 16px 16px 0 0;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 16px;
-            gap: 15px;
-        }
-
-        .recipe-image {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .recipe-main-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .recipe-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .recipe-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 16px;
-            flex-wrap: wrap;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.9rem;
-            color: #64748b;
-            background: #f8fafc;
-            padding: 6px 10px;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .meta-icon {
-            width: 16px;
-            height: 16px;
-            opacity: 0.7;
-        }
-
-        .difficulty {
-            font-weight: 600;
-        }
-
-        .difficulty.easy { color: #22c55e; }
-        .difficulty.medium { color: #f59e0b; }
-        .difficulty.hard { color: #ef4444; }
-
-        .nutrition-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 16px;
-        }
-
-        .nutrition-item {
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-        }
-
-        .nutrition-value {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 2px;
-        }
-
-        .nutrition-label {
-            font-size: 0.8rem;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 500;
-        }
-
-        .no-recipes {
-            text-align: center;
-            color: white;
-            font-size: 1.2rem;
-            margin-top: 50px;
-        }
-
-        .no-recipes a {
-            color: #fbbf24;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .no-recipes a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .recipes-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-            
-            .recipe-card {
-                padding: 16px;
-            }
-            
-            .card-header {
-                gap: 12px;
-            }
-            
-            .recipe-image {
-                width: 50px;
-                height: 50px;
-                font-size: 20px;
-            }
-            
-            .recipe-title {
-                font-size: 1.2rem;
-            }
-            
-            .nutrition-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>My Recipe Collection</h1>
-        
-        {% for recipe in recipes %}
-        <div class="recipe-card">
-            <h2 class="recipe-title">{{ recipe.title }}</h2>  <!-- assuming name is column 1 -->
-            <p class="recipe-description">{{ recipe.cooking_time }}</p>
-            <div class="recipe-ingredients">
-                <h3>Ingredients:</h3>
-                <p>{{ recipe.ingredients }}</p>
-            </div>
-            <div class="recipe-instructions">
-                <h3>Instructions:</h3>
-                <p>{{ recipe.instructions }}</p>
-            </div>
+    <div class="page-layout">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Daily Goals</h2>
+            <p class="sidebar-subtitle">Track your nutrition</p>
         </div>
-        {% endfor %}
+        
+        <ul class="nutrition-list">
+            <li class="nutrition-track">
+                <div class="nutrition-info">
+                    <span class="nutrition-name">Calories</span>
+                    <span class="nutrition-values">1,240 / 2,000</span>
+                </div>
+                <div class="progress-circle">
+                    <svg>
+                        <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 62.83;"></circle>
+                    </svg>
+                    <span class="progress-text">62%</span>
+                </div>
+            </li>
+            
+            <li class="nutrition-track">
+                <div class="nutrition-info">
+                    <span class="nutrition-name">Protein</span>
+                    <span class="nutrition-values">45g / 80g</span>
+                </div>
+                <div class="progress-circle">
+                    <svg>
+                        <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 55.49;"></circle>
+                    </svg>
+                    <span class="progress-text">56%</span>
+                </div>
+            </li>
+            
+            <li class="nutrition-track">
+                <div class="nutrition-info">
+                    <span class="nutrition-name">Carbs</span>
+                    <span class="nutrition-values">120g / 250g</span>
+                </div>
+                <div class="progress-circle">
+                    <svg>
+                        <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 65.33;"></circle>
+                    </svg>
+                    <span class="progress-text">48%</span>
+                </div>
+            </li>
+            
+            <li class="nutrition-track">
+                <div class="nutrition-info">
+                    <span class="nutrition-name">Fiber</span>
+                    <span class="nutrition-values">18g / 25g</span>
+                </div>
+                <div class="progress-circle">
+                    <svg>
+                        <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 35.19;"></circle>
+                    </svg>
+                    <span class="progress-text">72%</span>
+                </div>
+            </li>
+            
+            <li class="nutrition-track">
+                <div class="nutrition-info">
+                    <span class="nutrition-name">Fats</span>
+                    <span class="nutrition-values">55g / 70g</span>
+                </div>
+                <div class="progress-circle">
+                    <svg>
+                        <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 27.65;"></circle>
+                    </svg>
+                    <span class="progress-text">79%</span>
+                </div>
+            </li>
+        </ul>
     </div>
-    <h2>Good Afternoon, {{ username }}</h2/>
-    <a href = "{{url_for('recipegen.index')}}">Add Recipe</a>
-    <a href = "{{url_for('auth.log_out')}}">Logout</a>
-    <a href = "{{url_for('main.delete_all')}}">Delete All</a>
+    
+    <div class="dashboard-container">
+        <h1 class = "title">My Recipes</h1>
+        <h2>Good Afternoon, {{ username }}</h2/>
+        <a href = "{{url_for('recipegen.index')}}">Add Custom Recipe</a>
+        <a href = "{{url_for('recipegen.create_temp')}}">Generate Temp Recipe</a>
+        <a href = "{{url_for('auth.log_out')}}">Logout</a>
+        <a href = "{{url_for('main.delete_all')}}">Delete All</a>
+        <div class="recipes-grid">
+            {% for recipe in recipes%}
+            
+            <button class="recipe-card" onclick="openRecipe(1)">
+                <div class="card-header">
+                    <div class="recipe-image">🍝</div>
+                    <div class="recipe-main-info">
+                        <h3 class="recipe-title">{{recipe.title}}</h3>
+                        <div class="recipe-meta">
+                            <div class="meta-item">
+                                <span class="meta-icon">⭐</span>
+                                <!-- need to change colors based of difficulty -->
+                                <span class="difficulty easy">{{recipe.difficulty}}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-icon">⏱️</span>
+                                <span>{{recipe.cooking_time}} min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="nutrition-grid">
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">{{recipe.calorie_amount}}</div>
+                        <div class="nutrition-label">Calories</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">{{recipe.protein_amount}}g</div>
+                        <div class="nutrition-label">Protein</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">{{recipe.carb_amount}}g</div>
+                        <div class="nutrition-label">Carbs</div>
+                    </div>
+                    <div class="nutrition-item">
+                        <div class="nutrition-value">{{recipe.fiber_amount}}g</div>
+                        <div class="nutrition-label">Fiber</div>
+                    </div>
+                </div>
+            </button>
+
+            {% endfor %}
+            
+        </div>
+    </div>
+
+    <script>
+    function openRecipe(recipeId) {
+        console.log('Opening recipe:', recipeId);
+        alert(`Opening recipe ${recipeId}. Replace this with your navigation logic.`);
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('open');
+    }
+
+    // Add some interactive animations
+    document.querySelectorAll('.recipe-card').forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+
+    // Animate progress circles on load
+    function animateProgressCircles() {
+        const progressFills = document.querySelectorAll('.progress-fill');
+        progressFills.forEach((circle, index) => {
+            setTimeout(() => {
+                circle.style.transition = 'stroke-dashoffset 1s ease-out';
+            }, index * 200);
+        });
+    }
+
+    // Call animation when page loads
+    window.addEventListener('load', animateProgressCircles);
+    </script>
     
 </body>
 </html>

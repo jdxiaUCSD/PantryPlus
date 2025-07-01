@@ -6,6 +6,8 @@
     <title>Pantry+ Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/fonts.css') }}">
 
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='/css/base.css') }}"> -->
+    
     <style>
         /* ADD THIS: Font face declaration for your local font */
 
@@ -35,15 +37,15 @@
 
         .title {
             /* CHANGE THIS: Add your custom font and make it MUCH bigger */
-            font-family: 'Bubble', cursive, sans-serif;
-            font-size: 4rem;
+            font-family: 'ThrowUp', cursive, sans-serif;
+            font-size: 8rem;
             font-weight: 900; /* Make it much bolder */
             text-align: center;
             color: white; /* Fill with white */
             letter-spacing: 3px;
             position: absolute;
-            top: -40px; /* Position so title straddles the container edge */
-            left: 52%;
+            top: -95px; /* Position so title straddles the container edge */
+            left: 53%;
             transform: translateX(-50%);
             z-index: 10;
             /* Enhanced text styling for bubble font */
@@ -55,11 +57,56 @@
             white-space: nowrap;
         }
 
+        /* Title interactive effects */
+        .title:hover {
+            transform: translateX(-50%) scale(1.05);
+            text-shadow: 
+                0 0 0 3px #222,
+                0 0 0 6px #444,
+                0 8px 30px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba(255, 255, 255, 0.3);
+            filter: brightness(1.1);
+        }
+
+        .title:active {
+            transform: translateX(-50%) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* Title glow animation */
+        .title.glow-effect {
+            animation: titleGlow 0.6s ease-out;
+        }
+
+        @keyframes titleGlow {
+            0% { 
+                text-shadow: 
+                    0 0 0 2px #333,
+                    0 0 0 4px #555,
+                    0 4px 20px rgba(0, 0, 0, 0.3);
+            }
+            50% { 
+                text-shadow: 
+                    0 0 0 4px #fff,
+                    0 0 0 8px #667eea,
+                    0 8px 40px rgba(102, 126, 234, 0.6),
+                    0 0 30px rgba(255, 255, 255, 0.8);
+                transform: translateX(-50%) scale(1.08);
+            }
+            100% { 
+                text-shadow: 
+                    0 0 0 2px #333,
+                    0 0 0 4px #555,
+                    0 4px 20px rgba(0, 0, 0, 0.3);
+                transform: translateX(-50%) scale(1);
+            }
+        }
+
         .login-container {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            padding: 80px 40px 60px 40px; /* Reduced top padding since title now overlaps */
+            padding: 90px 40px 60px 40px; /* Reduced top padding since title now overlaps */
             width: 100%;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease;
@@ -222,9 +269,9 @@
 </head>
 <body>
     <div class="login-wrapper">
-        <h1 class="title">Pantry+</h1>
         
         <div class="login-container">
+            <h1 class="title">Pantry+</h1>
             <form method="POST" action="{{url_for('auth.login')}}">
                 <div class="form-group">
                     <input 
