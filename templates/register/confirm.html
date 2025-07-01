@@ -1,12 +1,402 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Registration - Pantry+</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{% block title %} Confirm Info {% endblock %}
-    
-{% block content %}
-    
-    <p> INFO INFO PEEPEE POOOPOOOOOO ALSEKFALSEKJFL;ASKEJF;ASLKJ</p>
-    <form action = "{{url_for('register.confirm')}}", method = "POST">
-        <input type = "submit", value = "CONFIRM">
-    </form>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-{% endblock %}
+        .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .register-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .progress-container {
+            margin-bottom: 40px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: #10b981;
+            z-index: 1;
+        }
+
+        .step {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #10b981;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+            z-index: 3;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #10b981;
+            text-align: center;
+            width: 24px;
+            display: flex;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .review-section {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-icon {
+            font-size: 1.2rem;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            min-height: 32px;
+            gap: 15px;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #333;
+            font-weight: 400;
+            font-size: 14px;
+            text-align: right;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            min-width: 0;
+        }
+
+        .info-value:empty::before {
+            content: 'Not specified';
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        .password-value {
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .nutrition-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .confirm-btn, .back-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            margin-top: 10px;
+        }
+
+        .confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .confirm-btn:active, .back-btn:active {
+            transform: translateY(0);
+        }
+
+        .completion-indicator {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .completion-indicator .check-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 40px 30px;
+                margin: 20px;
+                max-width: 100%;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+
+            .nutrition-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .confirm-btn:focus-visible,
+        .back-btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container confirmation">
+        <h1 class="title">Pantry+</h1>
+        
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="step">✓</div>
+                <div class="step">✓</div>
+                <div class="step">✓</div>
+            </div>
+            <div class="step-labels">
+                <div class="step-label">General</div>
+                <div class="step-label">Fitness</div>
+                <div class="step-label">Dietary</div>
+            </div>
+        </div>
+
+        <div class="completion-indicator">
+            <span class="check-icon">✅</span>
+            Review Your Information
+        </div>
+
+        <h2 class="page-title">Confirm Registration</h2>
+
+        <!-- User Info Section -->
+        <div class="review-section">
+            <h3 class="section-title">
+                <span class="section-icon">👤</span>
+                User Information
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Username:</span>
+                    <span class="info-value">{{ username  }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">{{ email  }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Password:</span>
+                    <span class="info-value password-value"> {{password}} </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fitness Goals Section -->
+        <div class="review-section">
+            <h3 class="section-title">
+                <span class="section-icon">🎯</span>
+                Fitness Goals
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Daily Calories:</span>
+                    <span class="info-value">{{ calories }} kcal</span>
+                </div>
+                <div class="nutrition-grid">
+                    <div class="info-item">
+                        <span class="info-label">Protein:</span>
+                        <span class="info-value">{{ protein }}g</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Carbohydrates:</span>
+                        <span class="info-value">{{ carbohydrates }}g</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fat:</span>
+                        <span class="info-value">{{ fat }}g</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fiber:</span>
+                        <span class="info-value">{{ fiber }}g</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Allergies Section -->
+        <div class="review-section">
+            <h3 class="section-title">
+                <span class="section-icon">⚠️</span>
+                Dietary Restrictions
+            </h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Allergies:</span>
+                    <span class="info-value">{{allergies}}</span>
+                </div>
+            </div>
+        </div>
+
+        <form action="{{url_for('register.confirm')}}" method="POST">
+            <button type="submit" class="confirm-btn">
+                ✓ Confirm & Create Account
+            </button>
+            
+            <button type="button" class="back-btn" onclick="window.history.back()">
+                ← Back to Edit
+            </button>
+        </form>
+    </div>
+
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.confirm-btn');
+            btn.innerHTML = '🎉 Creating Account...';
+            btn.style.opacity = '0.7';
+        });
+
+        // Add subtle animation to review sections
+        document.querySelectorAll('.review-section').forEach((section, index) => {
+            section.style.animationDelay = `${index * 0.1}s`;
+            section.style.animation = 'fadeInUp 0.6s ease-out forwards';
+        });
+    </script>
+</body>
+</html>

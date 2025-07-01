@@ -22,6 +22,7 @@ def step1():
         session['registration_data'] = {
             'username' : username,
             'password' : hashed_password,
+            'raw_password' : password,
             'email' : email
         }
         return render_template('/register/step2.html')
@@ -63,7 +64,16 @@ def step3():
         #check that numbers are valid (>0, maybe make sure that numbers look right <20000 calories)
         #if forms are not filled out, redirect back to step1
         session.modified = True
-        return render_template('register/confirm.html')
+        return render_template('register/confirm.html',
+            username = session['registration_data']['username'], 
+            password = session['registration_data']['raw_password'],
+            email = session['registration_data']['email'],
+            protein = session['registration_data']['fitness_goals']['daily_protein'],
+            carbohydrates = session['registration_data']['fitness_goals']['daily_carbohydrates'],
+            fat = session['registration_data']['fitness_goals']['daily_fat'],
+            fiber = session['registration_data']['fitness_goals']['daily_fiber'],
+            calories = session['registration_data']['fitness_goals']['daily_calories'],
+            allergies = session['registration_data']['allergy'])
     return render_template('register/step1.html')
 
 @register_bp.route('/confirm', methods = ['POST', 'GET'])
@@ -73,6 +83,7 @@ def confirm():
             username = session['registration_data']['username'], 
             password = session['registration_data']['password'],
             email = session['registration_data']['email'],
+            
         )
         db.session.add(user)
         db.session.flush()

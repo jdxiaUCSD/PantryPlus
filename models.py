@@ -43,6 +43,7 @@ class Recipes(db.Model):
     __tablename__ = 'recipes'
 
     id = db.Column(db.Integer, primary_key = True, nullable = False)
+    title = db.Column(db.Text)
     ingredients = db.Column(db.Text, nullable = False)
     instructions = db.Column(db.Text, nullable = False)
     cooking_time = db.Column(db.Integer)

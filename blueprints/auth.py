@@ -2,14 +2,15 @@ from flask import Blueprint, request, render_template, flash, session, redirect,
 from flask_login import login_user
 from models import User
 from app import db, bcrypt
+import logging, traceback
 
 auth_bp = Blueprint('auth', __name__, url_prefix = '/auth')
 
 @auth_bp.route('/', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form.get('Username').strip()
-        password = request.form.get('Password')
+        username = request.form.get('username').strip()
+        password = request.form.get('password')
         if not username or not password:
             flash('Please enter username and password')
         try:
@@ -20,7 +21,9 @@ def login():
             else:
                 flash('Incorrect Login credentials')
         except Exception as e:
-            flash('An error occurred. Please try again.')
+            logging.error(f"An error occurred: {e}")
+            traceback.print_exc()
+            flash('An exception has occured. Please try again.')
     return render_template('/auth/login.html')
 #Maybe do Google Log in integration down the line?
 

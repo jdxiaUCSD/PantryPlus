@@ -1,18 +1,321 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dietary Restrictions - Pantry+</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{% block title %} Dietary Restrictions {% endblock %}
-    
-{% block content %}
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-    <form action = "{{url_for('register.step3')}}", method = "POST">
-        <label for="dietary_restrictions">Allergies</label>
-        <select name="allergies" id="dietary_restrictions" required>
-            <option value="">-- Select Allergies --</option>
-            <option value="nuts">Nuts</option>
-            <option value="milk">Milk</option>
-            <option value="fish">Fish</option>
-        </select>
-        <input type = "submit" value = "Confirm">
-    </form>
+        .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease-out;
+        }
 
-{% endblock %}
+        .register-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 300;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #333;
+            letter-spacing: 2px;
+        }
+
+        .progress-container {
+            margin-bottom: 40px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            height: 2px;
+            background: #e1e5e9;
+            z-index: 1;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            height: 2px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 2;
+            transition: width 0.5s ease;
+            width: 100%;
+        }
+
+        .step {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #e1e5e9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            z-index: 3;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .step.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .step.completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            width: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .step-label.active {
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .step-label.completed {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            color: #333;
+            transition: all 0.3s ease;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 16px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 50px;
+        }
+
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-select option {
+            color: #333;
+            background: white;
+            padding: 10px;
+        }
+
+        .form-select option:first-child {
+            color: #9ca3af;
+        }
+
+        .next-btn, .back-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .back-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .next-btn:active, .back-btn:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+                margin-bottom: 15px;
+            }
+
+            .page-title {
+                font-size: 1.3rem;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-select:focus-visible,
+        .next-btn:focus-visible,
+        .back-btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container step-3">
+        <h1 class="title">Pantry+</h1>
+        
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line"></div>
+                <div class="step completed">✓</div>
+                <div class="step completed">✓</div>
+                <div class="step active">3</div>
+            </div>
+            <div class="step-labels">
+                <div class="step-label completed">General</div>
+                <div class="step-label completed">Fitness</div>
+                <div class="step-label active">Dietary</div>
+            </div>
+        </div>
+
+        <h2 class="page-title">Dietary Restrictions</h2>
+        
+        <form action="{{url_for('register.step3')}}" method="POST">
+            <div class="form-group">
+                <label for="dietary_restrictions" class="form-label">Allergies</label>
+                <select name="allergies" id="dietary_restrictions" class="form-select">
+                    <option value="">-- Select Allergies (optional) --</option>
+                    <option value="nuts">Nuts</option>
+                    <option value="milk">Milk</option>
+                    <option value="fish">Fish</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="next-btn">
+                Complete Registration ✓
+            </button>
+            
+            <button type="button" class="back-btn" onclick="window.history.back()">
+                ← Back
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Add interaction feedback
+        document.querySelector('.form-select').addEventListener('focus', function() {
+            this.parentElement.style.transform = 'translateY(-1px)';
+        });
+        
+        document.querySelector('.form-select').addEventListener('blur', function() {
+            this.parentElement.style.transform = 'translateY(0)';
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.next-btn');
+            btn.innerHTML = 'Processing...';
+            btn.style.opacity = '0.7';
+        });
+    </script>
+</body>
+</html>

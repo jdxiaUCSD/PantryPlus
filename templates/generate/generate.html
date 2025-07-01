@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %} Temp Generate Recipe {% endblock %}
+    
+{% block content %}
+
+    <form action = "{{url_for('recipegen.process')}}", method = "POST">
+        <input type = "text" name = "title" placeholder = "title">
+        <input type = "text" name = "ingredients" placeholder = "ingredients">
+        <input type = "text" name = "instructions" placeholder = "instructions">
+        <input type = "number" name = "cooking_time" placeholder = "cooking_time">
+        <input type = "number" name = "prep_time" placeholder = "prep_time">
+        <input type = "number" name = "servings" placeholder = "servings">
+        <input type = "number" name = "protein_amount" placeholder = "protein_amount">
+        <input type = "number" name = "carb_amount" placeholder = "carb_amount">
+        <input type = "number" name = "fiber_amount" placeholder = "fiber_amount">
+        <input type = "number" name = "fat_amount" placeholder = "fat_amount">
+        <input type = "number" name = "calorie_amount" placeholder = "calorie_amount">
+        <input type = "submit" value = "Next">
+    </form>
+
+{% endblock %}

@@ -1,14 +1,104 @@
-{% extends "base.html" %}
-
-{% block title %} General Information {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General Information - Pantry+</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/progress.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/page-specific/step1.css') }}">
     
-{% block content %}
 
-    <form action = "{{url_for('register.step1')}}", method = "POST">
-        <input type = "text" name = "Username" placeholder = "Username">
-        <input type = "text" name = "Password" placeholder = "Password">
-        <input type = "text" name = "Email" placeholder = "john_doe@gmail.com">
-        <input type = "submit" value = "Next">
-    </form>
+</head>
+<body>
+    <div class="register-container step-1">
+        <h1 class="title">Pantry+</h1>
+        
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line"></div>
+                <div class="step active">1</div>
+                <div class="step">2</div>
+                <div class="step">3</div>
+            </div>
+            <div class="step-labels">
+                <div class="step-label active">General</div>
+                <div class="step-label">Fitness</div>
+                <div class="step-label">Dietary</div>
+            </div>
+        </div>
 
-{% endblock %}
+        <h2 class="page-title">General Information</h2>
+        
+        <form action="{{url_for('register.step1')}}" method="POST">
+            <div class="form-group">
+                <input 
+                    type="text" 
+                    name="Username" 
+                    class="form-input" 
+                    placeholder="Username" 
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <input 
+                    type="password" 
+                    name="Password" 
+                    class="form-input" 
+                    placeholder="Password" 
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <input 
+                    type="email" 
+                    name="Email" 
+                    class="form-input" 
+                    placeholder="john_doe@gmail.com" 
+                    required
+                >
+            </div>
+            
+            <button type="submit" class="next-btn">
+                Next Step →
+            </button>
+        </form>
+        
+        <div class="back-link">
+            <a href="{{url_for('auth.login')}}"" class="back-btn-step1">Already have an account? Sign in</a>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('pageshow', function() {
+        const btn = document.querySelector('.next-btn');
+        if (btn) {
+            btn.innerHTML = 'Next Step →';
+            btn.style.opacity = '1';
+        }
+});
+        
+        // Add interaction feedback
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-1px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.next-btn');
+            btn.innerHTML = 'Processing...';
+            btn.style.opacity = '0.7';
+        });
+    </script>
+</body>
+</html>

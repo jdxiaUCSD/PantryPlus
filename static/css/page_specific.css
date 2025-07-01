@@ -1,0 +1,58 @@
+/* Page 1 Specific Styles */
+.page-1 .progress-line { width: 33.33%; }
+.page-1 .form-group {
+    margin-bottom: 25px;
+}
+.page-1 .form-input, 
+.page-1 .form-select {
+    padding: 18px 20px;
+}
+.page-1 .next-btn {
+    margin-top: 10px;
+}
+
+/* Page 2 Specific Styles */
+.page-2 .progress-line { width: 66.66%; }
+.page-2 .form-group {
+    margin-bottom: 20px;
+}
+.page-2 .form-input {
+    padding: 16px 20px;
+}
+
+/* Page 3 Specific Styles */
+.page-3 .progress-line { width: 100%; }
+.page-3 .form-group {
+    margin-bottom: 30px;
+}
+.page-3 .form-label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+.page-3 .form-select {
+    background: white;
+    color: #333;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 16px center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    padding-right: 50px;
+}
+.page-3 .form-select option {
+    color: #333;
+    background: white;
+    padding: 10px;
+}
+.page-3 .form-select option:first-child {
+    color: #9ca3af;
+}
+
+/* Step-specific progress bar widths (alternative method) */
+.step-1 .progress-line { width: 33.33%; }
+.step-2 .progress-line { width: 66.66%; }
+.step-3 .progress-line { width: 100%; }

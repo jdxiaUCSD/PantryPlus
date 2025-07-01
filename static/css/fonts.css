@@ -1,0 +1,7 @@
+@font-face {
+    font-family: 'Bubble';
+    src: url('/static/fonts/Bubble.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}

@@ -1,23 +1,280 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantry+ Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/fonts.css') }}">
 
-{% block title %} Login Page {% endblock %}
-    
-{% block content %}
-    {% with messages = get_flashed_messages()%}
-        {% if messages %}
-            <ul>
-                {%for message in messages%}
-                    <li>{{message}}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <style>
+        /* ADD THIS: Font face declaration for your local font */
 
-    <form action = "{{url_for('auth.login')}}", method = "POST">
-        <input type = "text" name = "Username" placeholder = "Username">
-        <input type = "text" name = "Password" placeholder = "Password">
-        <input type = "submit" value = "Login">
-    </form>
 
-    <a href = "{{url_for('register.register')}}"> Register </a>
-{% endblock %}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .login-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .title {
+            /* CHANGE THIS: Add your custom font and make it MUCH bigger */
+            font-family: 'Bubble', cursive, sans-serif;
+            font-size: 4rem;
+            font-weight: 900; /* Make it much bolder */
+            text-align: center;
+            color: white; /* Fill with white */
+            letter-spacing: 3px;
+            position: absolute;
+            top: -40px; /* Position so title straddles the container edge */
+            left: 52%;
+            transform: translateX(-50%);
+            z-index: 10;
+            /* Enhanced text styling for bubble font */
+            text-shadow: 
+                0 0 0 2px #333,     /* Dark outline */
+                0 0 0 4px #555,     /* Secondary outline */
+                0 4px 20px rgba(0, 0, 0, 0.3); /* Drop shadow */
+            -webkit-text-stroke: 2px #333; /* Webkit stroke for better outline */
+            white-space: nowrap;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 80px 40px 60px 40px; /* Reduced top padding since title now overlaps */
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            margin-top: 50px; /* Reduced margin to allow title overlap */
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 20px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 16px;
+            background: transparent;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+            transition: opacity 0.3s ease;
+        }
+
+        .form-input:focus::placeholder {
+            opacity: 0.7;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-btn {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            letter-spacing: 0.5px;
+        }
+
+        .register-btn:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 50px 30px 40px 30px;
+                margin: 20px;
+                margin-top: 30px;
+            }
+            
+            .title {
+                font-size: 3.5rem;
+                top: -30px; /* Adjusted for mobile */
+                letter-spacing: 2px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .title {
+                font-size: 3rem;
+                top: -25px; /* Adjusted for small mobile */
+                letter-spacing: 1px;
+            }
+            
+            .login-container {
+                margin-top: 25px;
+                padding-top: 65px;
+            }
+        }
+
+        /* Subtle animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes titleSlideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .login-container {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .title {
+            animation: titleSlideDown 0.8s ease-out 0.2s both;
+        }
+
+        /* Focus ring for accessibility */
+        .form-input:focus-visible,
+        .login-btn:focus-visible,
+        .register-btn:focus-visible {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <h1 class="title">Pantry+</h1>
+        
+        <div class="login-container">
+            <form method="POST" action="{{url_for('auth.login')}}">
+                <div class="form-group">
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Username" 
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <input 
+                        type="password" 
+                        name="password" 
+                        class="form-input" 
+                        placeholder="Password" 
+                        required
+                    >
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="register-link">
+                <a href="{{url_for('register.register')}}" class="register-btn">Create Account</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add subtle interaction feedback
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Smooth form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.login-btn');
+            btn.innerHTML = 'Signing In...';
+            btn.style.opacity = '0.7';
+        });
+    </script>
+</body>
+</html>

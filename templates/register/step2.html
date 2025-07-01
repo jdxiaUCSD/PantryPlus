@@ -1,16 +1,139 @@
-{% extends "base.html" %}
-
-{% block title %} Fitness Goals {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Goals - Pantry+</title>
+     <link rel="stylesheet" href="{{ url_for('static', filename='/css/fonts.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/progress.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/buttons.css') }}">
     
-{% block content %}
+</head>
+<body>
+    <div class="register-container step-2">
+        <h1 class="title">Pantry+</h1>
+        
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line"></div>
+                <div class="step completed">✓</div>
+                <div class="step active">2</div>
+                <div class="step">3</div>
+            </div>
+            <div class="step-labels">
+                <div class="step-label completed">General</div>
+                <div class="step-label active">Fitness</div>
+                <div class="step-label">Dietary</div>
+            </div>
+        </div>
 
-    <form action = "{{url_for('register.step2')}}", method = "POST">
-        <input type = "number" name = "daily_calories" placeholder = "Daily Calorie Goal">
-        <input type = "number" name = "daily_carbohydrates" placeholder = "Daily Carbohydrate Goal (g)">
-        <input type = "number" name = "daily_fat" placeholder = "Daily Fats Goal (g)">
-        <input type = "number" name = "daily_fiber" placeholder = "Daily Fiber Goal (g)">
-        <input type = "number" name = "daily_protein" placeholder = "Daily Protein Goal (g)">
-        <input type = "submit" value = "Next">
-    </form>
+        <h2 class="page-title">Fitness Goals</h2>
+        
+        <form action="{{url_for('register.step2')}}" method="POST">
+            <div class="form-group">
+                <input 
+                    type="number" 
+                    name="daily_calories" 
+                    class="form-input" 
+                    placeholder="Daily Calorie Goal"
+                    min="800"
+                    max="5000"
+                    required
+                >
+                <span class="unit-label">kcal</span>
+            </div>
+            
+            <div class="nutrition-grid">
+                <div class="form-group">
+                    <input 
+                        type="number" 
+                        name="daily_protein" 
+                        class="form-input" 
+                        placeholder="Protein Goal"
+                        min="0"
+                        max="500"
+                        required
+                    >
+                    <span class="unit-label">g</span>
+                </div>
+                
+                <div class="form-group">
+                    <input 
+                        type="number" 
+                        name="daily_carbohydrates" 
+                        class="form-input" 
+                        placeholder="Carb Goal"
+                        min="0"
+                        max="800"
+                        required
+                    >
+                    <span class="unit-label">g</span>
+                </div>
+                
+                <div class="form-group">
+                    <input 
+                        type="number" 
+                        name="daily_fat" 
+                        class="form-input" 
+                        placeholder="Fat Goal"
+                        min="0"
+                        max="300"
+                        required
+                    >
+                    <span class="unit-label">g</span>
+                </div>
+                
+                <div class="form-group">
+                    <input 
+                        type="number" 
+                        name="daily_fiber" 
+                        class="form-input" 
+                        placeholder="Fiber Goal"
+                        min="0"
+                        max="100"
+                        required
+                    >
+                    <span class="unit-label">g</span>
+                </div>
+            </div>
+            
+            <button type="submit" class="next-btn">
+                Next Step →
+            </button>
+            
+            <button type="button" class="back-btn" onclick="window.history.back()">
+                ← Back
+            </button>
+        </form>
+    </div>
 
-{% endblock %}
+    <script>
+        
+        window.addEventListener('pageshow', function() {
+            const btn = document.querySelector('.next-btn');
+            if (btn) {
+                btn.innerHTML = 'Next Step →';
+                btn.style.opacity = '1';
+            }
+        });
+        // Add interaction feedback
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-1px)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const btn = document.querySelector('.next-btn');
+            btn.innerHTML = 'peepeepoopoo...';
+            btn.style.opacity = '0.7';
+        });
+    </script>
+</body>
+</html>
