@@ -6,15 +6,23 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: Arial, Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
 }
 
 .dashboard-container {
+    display: flex;
+    flex-direction: column;
     max-width: 1200px;
     margin: 0 auto;
+    align-items: center;
+    margin-left: 200px; /* Sidebar width (280px) + some spacing */
+    padding: 40px 20px; /* Add some top padding for better spacing */
+    min-height: 100vh; /* Ensure it takes full height */
+    justify-content: flex-start; /* Start from top instead of center */
+
 }
 
 h1 {
@@ -92,6 +100,7 @@ h1 {
     color: #2c3e50;
     margin-bottom: 8px;
     line-height: 1.3;
+
 }
 
 .recipe-meta {

@@ -1,0 +1,68 @@
+
+/* Textbox styling */
+.recipe-search-container {
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.recipe-search-box {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-family: inherit;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.recipe-search-box:focus {
+    outline: none;
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    transform: translateY(-2px);
+}
+
+.recipe-search-box::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* Search input wrapper with button */
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-submit-btn {
+    position: absolute;
+    right: 8px;
+    background: #4f46e5;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.search-submit-btn:hover {
+    background: #4338ca;
+    transform: translateX(2px);
+}
+
+.search-submit-btn:active {
+    transform: translateX(2px) scale(0.95);
+}
+
+/* Adjust input padding to make room for button */
+.recipe-search-box {
+    padding-right: 4rem;
+}

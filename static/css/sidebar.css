@@ -13,6 +13,8 @@
     left: 0;
     top: 0;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar-header {
@@ -22,7 +24,7 @@
 
 .sidebar-title {
     color: white;
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     font-weight: 600;
     margin-bottom: 8px;
 }
@@ -34,8 +36,7 @@
 
 .nutrition-list {
     list-style: none;
-    padding: 0;
-    margin: 0;
+    margin-top: -20px;
 }
 
 .nutrition-track {
@@ -43,13 +44,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 0;
+    padding: 20px 15px 15px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
+    border-radius: 12px;
+    margin: 10px 0 0 0;
 }
 
 .nutrition-track:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(179, 58, 240, 0.594);
     border-radius: 12px;
     padding-left: 15px;
     padding-right: 15px;
@@ -110,4 +113,81 @@
     color: white;
     font-size: 0.75rem;
     font-weight: 600;
+}
+
+.sidebar-footer {
+    margin-top: auto; /* Pushes footer to bottom */
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.avatar-text {
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.username {
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.user-status {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+}
+
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 77, 77, 0.3);
+    transform: translateX(5px);
+}
+
+.logout-icon {
+    font-size: 1.1rem;
 }

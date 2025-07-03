@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/recipes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/searchbox.css') }}">
+
 
 </head>
 <body>
@@ -21,7 +23,7 @@
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Calories</span>
-                    <span class="nutrition-values">1,240 / 2,000</span>
+                    <span class="nutrition-values">0 / {{daily_calories}}</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
@@ -35,7 +37,7 @@
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Protein</span>
-                    <span class="nutrition-values">45g / 80g</span>
+                    <span class="nutrition-values">0g / {{daily_protein}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
@@ -49,7 +51,7 @@
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Carbs</span>
-                    <span class="nutrition-values">120g / 250g</span>
+                    <span class="nutrition-values">120g / {{daily_carbohydrates}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
@@ -63,7 +65,7 @@
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Fiber</span>
-                    <span class="nutrition-values">18g / 25g</span>
+                    <span class="nutrition-values">18g / {{daily_fiber}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
@@ -77,7 +79,7 @@
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Fats</span>
-                    <span class="nutrition-values">55g / 70g</span>
+                    <span class="nutrition-values">55g / {{daily_fat}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
@@ -88,6 +90,21 @@
                 </div>
             </li>
         </ul>
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">
+                    <span class="avatar-text">{{ username[0].upper() if username else 'U' }}</span>
+                </div>
+                <div class="user-info">
+                    <span class="username">{{ username }}</span>
+                    <span class="user-status">Marlon's Twin</span>
+                </div>
+            </div>
+        
+            <a href="{{ url_for('auth.log_out') }}" class="logout-btn">
+                <span>Logout</span>
+            </a>
+        </div>
     </div>
     
     <div class="dashboard-container">
@@ -97,6 +114,25 @@
         <a href = "{{url_for('recipegen.create_temp')}}">Generate Temp Recipe</a>
         <a href = "{{url_for('auth.log_out')}}">Logout</a>
         <a href = "{{url_for('main.delete_all')}}">Delete All</a>
+        
+        <div class="recipe-search-container">
+            <form action="{{ url_for('recipegen.generate') }}" method="POST" class="search-form">
+                <div class="search-input-wrapper">
+                    <input 
+                        type="text" 
+                        name="query"
+                        class="recipe-search-box" 
+                        placeholder="Search recipes by name, ingredients, or difficulty..."
+                        id="recipeSearch"
+                        value="{{ request.args.get('query', '') }}"
+                    >
+                    <button type="submit" class="search-submit-btn">
+                        →
+                    </button>
+                </div>
+            </form>
+        </div>
+
         <div class="recipes-grid">
             {% for recipe in recipes%}
             

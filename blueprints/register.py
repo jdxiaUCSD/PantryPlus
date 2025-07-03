@@ -87,21 +87,24 @@ def confirm():
         )
         db.session.add(user)
         db.session.flush()
-
-        fitness_goals = session['registration_data']['fitness_goals']
+        
         goal = Goals(
-            daily_protein = session['registration_data']['fitness_goals']['daily_protein'],
-            daily_carbohydrates = session['registration_data']['fitness_goals']['daily_carbohydrates'],
-            daily_fat = session['registration_data']['fitness_goals']['daily_fat'],
-            daily_fiber = session['registration_data']['fitness_goals']['daily_fiber'],
-            daily_calories = session['registration_data']['fitness_goals']['daily_calories'],
+            daily_protein = int(session['registration_data']['fitness_goals']['daily_protein']),
+            daily_carbohydrates = int(session['registration_data']['fitness_goals']['daily_carbohydrates']),
+            daily_fat = int(session['registration_data']['fitness_goals']['daily_fat']),
+            daily_fiber = int(session['registration_data']['fitness_goals']['daily_fiber']),
+            daily_calories = int(session['registration_data']['fitness_goals']['daily_calories']),
             allergy = session['registration_data']['allergy'],
-            user_id = user.uid
+            user_id = int(user.uid)
         )
-
-        db.session.add(goal)
-
-        db.session.commit()
+        try:
+            db.session.add(goal)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(f"Error adding goal: {e}")
+            print(f"Error type: {type(e)}")
+            return "Failed."
 
         session.pop('registration_data', None)
 
