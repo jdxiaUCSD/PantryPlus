@@ -23,8 +23,15 @@ def dashboard():
         daily_fat = goals.daily_fat
         daily_fiber = goals.daily_fiber
         daily_calories = goals.daily_calories
+        current_protein = 40
+        current_carbohydrates = 130
+        current_fat = 30
+        current_fiber = 18
+        current_calories = 2000
+
     else:
-        daily_protein = 1000
+        print("Error fetching goals. Please create another account.")
+        return redirect(url_for('auth.login'))
     return render_template('/main/dashboard.html', 
         recipes=recipes, 
         username = current_user.username,
@@ -32,7 +39,12 @@ def dashboard():
         daily_carbohydrates = daily_carbohydrates,
         daily_fat = daily_fat,
         daily_fiber = daily_fiber,
-        daily_calories = daily_calories
+        daily_calories = daily_calories,
+        current_protein = current_protein,
+        current_carbohydrates = current_carbohydrates,
+        current_fat = current_fat,
+        current_fiber = current_fiber,
+        current_calories = current_calories
         )
 
 
