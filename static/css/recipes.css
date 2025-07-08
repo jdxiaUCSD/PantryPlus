@@ -132,9 +132,9 @@ h1 {
     font-weight: 600;
 }
 
-.difficulty.easy { color: #22c55e; }
-.difficulty.medium { color: #f59e0b; }
-.difficulty.hard { color: #ef4444; }
+.difficulty.Easy { color: #22c55e; }
+.difficulty.Medium { color: #f59e0b; }
+.difficulty.Hard { color: #ef4444; }
 
 .nutrition-grid {
     display: grid;
