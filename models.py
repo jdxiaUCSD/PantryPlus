@@ -9,6 +9,12 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String, nullable = False)
     password = db.Column(db.String, nullable = False)
     email = db.Column(db.String, nullable = False)
+
+    current_protein = db.Column(db.Integer)
+    current_carbohydrates = db.Column(db.Integer)
+    current_fat = db.Column(db.Integer)
+    current_fiber = db.Column(db.Integer)
+    current_calories = db.Column(db.Integer)
     #backref = user adds a user attribute to every recipe/goal object
     #cascade = when you save/update user, applies to recipes. if a recipe becomes disconnected from its user
     #delet it
