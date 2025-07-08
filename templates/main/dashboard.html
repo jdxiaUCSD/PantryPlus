@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/recipes.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/sidebar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='/css/searchbox.css') }}">
+    
 
 
 </head>
@@ -23,70 +24,69 @@
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Calories</span>
-                    <span class="nutrition-values">0 / {{daily_calories}}</span>
+                    <span class="nutrition-values">{{current_calories}} / {{daily_calories}}</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
                         <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
-                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 62.83;"></circle>
-                    </svg>
-                    <span class="progress-text">62%</span>
+<circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: {{ 125.66 * (1 - (current_calories / daily_calories)|default(0)) }};"></circle>                    </svg>
+                    <span class="progress-text">{{current_calories * 100 // daily_calories}}%</span>
                 </div>
             </li>
             
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Protein</span>
-                    <span class="nutrition-values">0g / {{daily_protein}}g</span>
+                    <span class="nutrition-values">{{current_protein}}g / {{daily_protein}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
                         <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
-                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 55.49;"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: {{ 125.66 * (1 - (current_protein / daily_protein)|default(0)) }};"></circle>
                     </svg>
-                    <span class="progress-text">56%</span>
+                    <span class="progress-text">{{current_protein * 100 // daily_protein}}%</span>
                 </div>
             </li>
             
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Carbs</span>
-                    <span class="nutrition-values">120g / {{daily_carbohydrates}}g</span>
+                    <span class="nutrition-values">{{current_carbohydrates}}g / {{daily_carbohydrates}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
                         <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
-                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 65.33;"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: {{ 125.66 * (1 - (current_carbohydrates / daily_carbohydrates)|default(0)) }};"></circle>
                     </svg>
-                    <span class="progress-text">48%</span>
+                    <span class="progress-text">{{current_carbohydrates * 100 // daily_carbohydrates}}%</span>
                 </div>
             </li>
             
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Fiber</span>
-                    <span class="nutrition-values">18g / {{daily_fiber}}g</span>
+                    <span class="nutrition-values">{{current_fiber}}g / {{daily_fiber}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
                         <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
-                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 35.19;"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: {{ 125.66 * (1 - (current_fiber / daily_fiber)|default(0)) }};"></circle>
                     </svg>
-                    <span class="progress-text">72%</span>
+                    <span class="progress-text">{{current_fiber * 100 // daily_fiber}}%</span>
                 </div>
             </li>
             
             <li class="nutrition-track">
                 <div class="nutrition-info">
                     <span class="nutrition-name">Fats</span>
-                    <span class="nutrition-values">55g / {{daily_fat}}g</span>
+                    <span class="nutrition-values">{{current_fat}}g / {{daily_fat}}g</span>
                 </div>
                 <div class="progress-circle">
                     <svg>
                         <circle class="progress-bg" cx="25" cy="25" r="20"></circle>
-                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: 27.65;"></circle>
+                        <circle class="progress-fill" cx="25" cy="25" r="20" style="stroke-dashoffset: {{ 125.66 * (1 - (current_fat / daily_fat)|default(0)) }};"></circle>
                     </svg>
-                    <span class="progress-text">79%</span>
+                    <span class="progress-text">{{current_fat * 100 // daily_fat}}%</span>
                 </div>
             </li>
         </ul>
@@ -112,7 +112,6 @@
         <h2>Good Afternoon, {{ username }}</h2/>
         <a href = "{{url_for('recipegen.index')}}">Add Custom Recipe</a>
         <a href = "{{url_for('recipegen.create_temp')}}">Generate Temp Recipe</a>
-        <a href = "{{url_for('auth.log_out')}}">Logout</a>
         <a href = "{{url_for('main.delete_all')}}">Delete All</a>
         
         <div class="recipe-search-container">
@@ -145,7 +144,7 @@
                             <div class="meta-item">
                                 <span class="meta-icon">⭐</span>
                                 <!-- need to change colors based of difficulty -->
-                                <span class="difficulty easy">{{recipe.difficulty}}</span>
+                                <span class="difficulty {{recipe.difficulty}}">{{recipe.difficulty}}</span>
                             </div>
                             <div class="meta-item">
                                 <span class="meta-icon">⏱️</span>
