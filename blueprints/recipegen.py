@@ -11,6 +11,10 @@ gen_bp = Blueprint('recipegen', __name__, url_prefix = '/generate')
 def index():
     return render_template('/generate/generate.html')
 
+@gen_bp.route('/processing')
+def process():
+    return "processing?"
+
 @gen_bp.route('/create_temp')
 def create_temp():
     title = 'Black Pepper Steak'
@@ -50,24 +54,24 @@ def create_temp():
     
     return redirect(url_for('main.dashboard'))
 
-# @gen_bp.route('/generate', methods = ['POST'])
-# def generate():
-#     """Generate recipes using optimized AI models"""
-#     query = request.form.get('query')
+@gen_bp.route('/generate', methods = ['POST'])
+def generate():
+    """Generate recipes using optimized AI models"""
+    query = request.form.get('query')
     
-#     if not query:
-#         flash('Please enter a recipe query', 'error')
-#         return redirect(url_for('recipegen.index'))
+    if not query:
+        flash('Please enter a recipe query', 'error')
+        return redirect(url_for('recipegen.index'))
     
-#     try:
-#         # Use optimized batch inference for recipe generation
-#         results = model_loader.batch_inference([query], RECOMMENDED_MODELS['fast'])
+    # try:
+    #     # Use optimized batch inference for recipe generation
+    #     results = model_loader.batch_inference([query], RECOMMENDED_MODELS['fast'])
         
-#         # For now, return the query (you can expand this with actual recipe generation)
-#         # TODO: Implement actual recipe generation logic using the model results
-#         flash(f'Generated recipe for: {query}', 'success')
+    #     # For now, return the query (you can expand this with actual recipe generation)
+    #     # TODO: Implement actual recipe generation logic using the model results
+    #     flash(f'Generated recipe for: {query}', 'success')
         
-#     except Exception as e:
-#         flash(f'Error generating recipe: {str(e)}', 'error')
+    # except Exception as e:
+    #     flash(f'Error generating recipe: {str(e)}', 'error')
     
-#     return redirect(url_for('recipegen.index'))
+    return redirect(url_for('recipegen.index'))
