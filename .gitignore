@@ -7,3 +7,25 @@ __pycache__/
 Miniconda3-latest-MacOSX-*.sh
 
 
+__pycache__/
+*.pyc
+*.pyo
+
+*.pkl
+*.h5
+*.pt
+*.pth
+
+data/
+datasets/
+*.csv
+*.json
+*.parquet
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+.DS_Store
+Thumbs.db

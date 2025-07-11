@@ -1,0 +1,13 @@
+name: pantryplus
+channels:
+  - defaults
+dependencies:
+  - python=3.11
+  - pytorch
+  - torchvision
+  - torchaudio
+  - numpy
+  - requests
+  - pyyaml
+  - pip
+prefix: /Users/goats/miniconda3/envs/pantryplus
