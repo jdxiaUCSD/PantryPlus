@@ -29,3 +29,9 @@ datasets/
 
 .DS_Store
 Thumbs.db
+
+Pantry+Roadmap.md
+textembeddings.py
+transformerstest.py
+
+.gitignore
